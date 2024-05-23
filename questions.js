@@ -116,9 +116,14 @@ function shareScoreOnFacebook(score) {
   var scoreText = getScoreText(score);
   var shareText = "I scored " + score + " in the Pop Quiz! " + scoreText;
 
-  // Create the Facebook share URL with the text description
+  // URL of the page you want to share
+  var shareUrl = "https://visarutforthaipbs.github.io/coupquiz-master/";
+
+  // Create the Facebook share URL with the URL and text description
   var facebookShareUrl =
-    "https://www.facebook.com/sharer/sharer.php?quote=" +
+    "https://www.facebook.com/sharer/sharer.php?u=" +
+    encodeURIComponent(shareUrl) +
+    "&quote=" +
     encodeURIComponent(shareText);
 
   // Open the Facebook share URL in a new window

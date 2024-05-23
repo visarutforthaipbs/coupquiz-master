@@ -83,7 +83,7 @@ button {
 }
 
 button:hover {
-  background-color: #ffcc00;
+  background-color: #636363;
 }
 
 button:focus {
@@ -120,5 +120,15 @@ footer {
 }
 
 .textintimmer {
+  color: white;
+}
+
+.correct {
+  background-color: #4caf50;
+  color: white;
+}
+
+.incorrect {
+  background-color: #f44336;
   color: white;
 }

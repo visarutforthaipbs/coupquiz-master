@@ -7,7 +7,7 @@ function myTimer() {
   sec--;
   if (sec === -1) {
     clearInterval(time);
-    alert("หมดเวลาจ้า!!!");
+    showScores(); // Show scores when the time is up
   }
 }
 
@@ -110,7 +110,6 @@ function showScores() {
   };
 }
 
-// Function to share score on Facebook
 function shareScoreOnFacebook(score) {
   // Generate the score text
   var scoreText = getScoreText(score);
@@ -121,10 +120,11 @@ function shareScoreOnFacebook(score) {
 
   // Create the Facebook share URL with the URL and text description
   var facebookShareUrl =
-    "https://www.facebook.com/sharer/sharer.php?u=" +
+    "https://www.facebook.com/dialog/share?app_id=1080666973030715&href=" +
     encodeURIComponent(shareUrl) +
     "&quote=" +
-    encodeURIComponent(shareText);
+    encodeURIComponent(shareText) +
+    "&hashtag=%23PopQuiz";
 
   // Open the Facebook share URL in a new window
   window.open(facebookShareUrl, "_blank");
@@ -224,3 +224,43 @@ var quiz = new Quiz(questions);
 
 // Show quiz
 populate();
+
+function guess(id, guess) {
+  var button = document.getElementById(id);
+  button.onclick = function () {
+    var correct = quiz.getQuestionIndex().isCorrectAnswer(guess);
+    if (correct) {
+      button.classList.add("correct");
+    } else {
+      button.classList.add("incorrect");
+    }
+    setTimeout(function () {
+      quiz.guess(guess);
+      button.classList.remove("correct");
+      button.classList.remove("incorrect");
+      populate();
+    }, 500); // Delay to show feedback
+  };
+}
+
+function showScores() {
+  var gameOverHTML = "<h1>คุณจำได้ดีแค่ไหน</h1>";
+  var scoreText = getScoreText(quiz.score);
+  gameOverHTML +=
+    "<h2 id='score'> คะแนน: " + quiz.score + " - " + scoreText + "</h2>";
+  gameOverHTML +=
+    "<button id='facebookShareButton'>แชร์คะแนนนี้บน Facebook</button>";
+  gameOverHTML += "<button id='restartButton'>เริ่มใหม่</button>";
+  var element = document.getElementById("quiz");
+  element.innerHTML = gameOverHTML;
+
+  var facebookShareButton = document.getElementById("facebookShareButton");
+  facebookShareButton.onclick = function () {
+    shareScoreOnFacebook(quiz.score);
+  };
+
+  var restartButton = document.getElementById("restartButton");
+  restartButton.onclick = function () {
+    location.reload(); // Simple reload to restart the quiz
+  };
+}
